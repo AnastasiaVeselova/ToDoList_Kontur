@@ -38,6 +38,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Runtime.Serialization.Primitives" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -49,10 +50,8 @@
   <ItemGroup>
     <Compile Include="Class1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ToDoTasks\IToDoTaskService.cs" />
-    <Compile Include="ToDoTasks\ToDoBuildInfo.cs" />
+    <Compile Include="ToDoTasks\ToDoTaskBuildInfo.cs" />
     <Compile Include="ToDoTasks\ToDoTask.cs" />
-    <Compile Include="ToDoTasks\ToDoTaskCreationInfo.cs" />
     <Compile Include="ToDoTasks\ToDoTaskInfo.cs" />
     <Compile Include="ToDoTasks\ToDoTaskInfoSearchQuery.cs" />
     <Compile Include="ToDoTasks\ToDoTaskPatchInfo.cs" />

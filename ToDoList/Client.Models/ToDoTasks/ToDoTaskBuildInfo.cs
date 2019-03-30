@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Client.Models.ToDoTasks
 {
- /*   /// <summary>
+    /// <summary>
     /// Информация для создания задачи
     /// </summary>
     [DataContract]
@@ -17,7 +17,7 @@ namespace Client.Models.ToDoTasks
         /// <summary>
         /// Заголовок задачи
         /// </summary>
-        [DataMember(Required = true)]
+        [DataMember(IsRequired = true)]
         public string Title { get; set; }
 
         /// <summary>
@@ -31,5 +31,5 @@ namespace Client.Models.ToDoTasks
         /// </summary>
         [DataMember(IsRequired = false)]
         public IReadOnlyList<string> Tags { get; set; }
-    }*/
+    }
 }
