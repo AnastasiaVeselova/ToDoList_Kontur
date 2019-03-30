@@ -56,10 +56,10 @@
     <Compile Include="ToDoTasks\ToDoTaskInfoSearchQuery.cs" />
     <Compile Include="ToDoTasks\ToDoTaskPatchInfo.cs" />
     <Compile Include="ToDoTasks\ToDoTaskSortBy.cs" />
+    <Compile Include="Users\User.cs" />
+    <Compile Include="Users\UserRegistrationInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Users\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>

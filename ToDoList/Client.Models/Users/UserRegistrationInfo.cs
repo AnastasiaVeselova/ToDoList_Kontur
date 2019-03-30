@@ -1,26 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Models.Users
 {
-    public class User
+    public class UserRegistrationInfo
     {
-        /// <summary>
-        /// Идентификатор пользователя
-        /// </summary>
-        public string Id { get; set; }
-
         /// <summary>
         /// Логин пользователя
         /// </summary>
+        [DataMember(IsRequired = true)]
         public string Login { get; set; }
 
         /// <summary>
-        /// Дата регистрации пользователя
+        /// Пароль пользователя
         /// </summary>
-        public DateTime RegisteredAt { get; set; }
+        [DataMember(IsRequired = true)]
+        public string Password { get; set; }
     }
 }
