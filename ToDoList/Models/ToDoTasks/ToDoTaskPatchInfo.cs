@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Models.ToDoTasks
 {
-    public class TodoTaskPatchInfo
+    public class ToDoTaskPatchInfo
     {
         /// <summary>
         /// Создает новый экземпляр объекта, описывающего изменение заметки
@@ -14,9 +14,9 @@ namespace Models.ToDoTasks
         /// <param name="recordId">Идентификатор задачи, которую нужно изменить</param>
         /// <param name="title">Новый заголовок задачи</param>
         /// <param name="text">Новый текст задачи</param>
-        public TodoTaskPatchInfo(Guid recordId, string title = null, string text = null)
+        public ToDoTaskPatchInfo(Guid id, string title = null, string text = null,DateTime? endAt = null, bool? isDone = null, ToDoTaskPriority? priority = null)
         {
-            this.RecordId = recordId;
+            this.Id = id;
             this.Title = title;
             this.Text = text;
         }
@@ -24,7 +24,7 @@ namespace Models.ToDoTasks
         /// <summary>
         /// Идентификатор задачи, которую нужно изменить
         /// </summary>
-        public Guid RecordId { get; }
+        public Guid Id { get; }
 
         /// <summary>
         /// Новый заголовок задачи
@@ -35,5 +35,11 @@ namespace Models.ToDoTasks
         /// Новый текст задачи
         /// </summary>
         public string Text { get; set; }
+
+        public DateTime? EndAt { get; set; }
+
+        public bool? IsDone { get; set; }
+
+        public ToDoTaskPriority? Priority { get; set; }             
     }
 }

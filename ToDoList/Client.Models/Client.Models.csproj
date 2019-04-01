@@ -48,13 +48,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="SortType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ToDoTasks\ToDoTaskBuildInfo.cs" />
     <Compile Include="ToDoTasks\ToDoTask.cs" />
     <Compile Include="ToDoTasks\ToDoTaskInfo.cs" />
     <Compile Include="ToDoTasks\ToDoTaskInfoSearchQuery.cs" />
     <Compile Include="ToDoTasks\ToDoTaskPatchInfo.cs" />
+    <Compile Include="ToDoTasks\ToDoTaskPriority.cs" />
     <Compile Include="ToDoTasks\ToDoTaskSortBy.cs" />
     <Compile Include="Users\User.cs" />
     <Compile Include="Users\UserRegistrationInfo.cs" />

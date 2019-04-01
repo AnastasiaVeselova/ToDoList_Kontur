@@ -6,11 +6,13 @@ using System.Threading.Tasks;
 
 namespace Client.Models.ToDoTasks
 {
-    public class ToDoTask : ToDoTaskInfo
+    public enum ToDoTaskPriority
     {
-        /// <summary>
-        /// Описание задачи
-        /// </summary>
-        public string Text { get; set; }
+        Urgent = 3,
+        Highest = 2,
+        High = 1,
+        Normal = 0,
+        Low = -1,
+        Lowest = -2
     }
 }

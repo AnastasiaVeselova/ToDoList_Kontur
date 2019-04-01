@@ -15,7 +15,7 @@ namespace Models.ToDoTasks
 
         Task<ToDoTask> GetAsync(Guid recordId, CancellationToken cancellationToken);
 
-        Task<ToDoTask> PatchAsync(TodoTaskPatchInfo patchInfo, CancellationToken cancellationToken);
+        Task<ToDoTask> PatchAsync(ToDoTaskPatchInfo patchInfo, CancellationToken cancellationToken);
 
         Task RemoveAsync(Guid recordId, CancellationToken cancellationToken);
     }

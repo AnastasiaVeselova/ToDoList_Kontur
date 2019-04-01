@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Models.ToDoTasks
 {
-    public class ToDoTask
+    public class ToDoTask : ToDoTaskInfo
     {
         [BsonElement("Text")]
         public string Text { get; set; }

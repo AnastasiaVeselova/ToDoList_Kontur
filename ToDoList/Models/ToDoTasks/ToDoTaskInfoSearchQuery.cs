@@ -37,11 +37,6 @@ namespace Models.ToDoTasks
         public DateTime? CreatedTo { get; set; }
 
         /// <summary>
-        /// Искать по параметру "в избранном"
-        /// </summary>
-        public bool? Favorite { get; set; }
-
-        /// <summary>
         /// Тип сортировки
         /// </summary>
         public SortType? Sort { get; set; }
@@ -49,11 +44,12 @@ namespace Models.ToDoTasks
         /// <summary>
         /// Аспект заметки, по которому нужно искать
         /// </summary>
-        public NoteSortBy? SortBy { get; set; }
+        public ToDoTaskSortBy? SortBy { get; set; }
 
-        /// <summary>
-        /// Теги заметок
-        /// </summary>
-        public IReadOnlyList<string> Tags { get; set; }
+        public ToDoTaskPriority? Priority { get; set; }
+
+        public DateTime? EndAt { get; set; }
+
+        public bool? IsDone { get; set; }
     }
 }

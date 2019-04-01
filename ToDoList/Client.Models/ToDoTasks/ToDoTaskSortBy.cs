@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Models.ToDoTasks
-{
-    public enum TodoSortBy
+namespace Client.Models.ToDoTasks
+{ 
+    public enum ToDoTaskSortBy
     {
         /// <summary>
         /// Сортировкаи по дате создания

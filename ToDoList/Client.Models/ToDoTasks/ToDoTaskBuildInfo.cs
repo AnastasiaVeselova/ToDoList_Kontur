@@ -26,10 +26,10 @@ namespace Client.Models.ToDoTasks
         [DataMember(IsRequired = true)]
         public string Text { get; set; }
 
-        /// <summary>
-        /// Теги задачи
-        /// </summary>
+        [DataMember(IsRequired = true)]
+        public DateTime EndAt { get; set; }
+
         [DataMember(IsRequired = false)]
-        public IReadOnlyList<string> Tags { get; set; }
+        public ToDoTaskPriority Priority { get; set; }
     }
 }

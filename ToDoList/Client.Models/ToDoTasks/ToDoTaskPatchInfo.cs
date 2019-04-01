@@ -5,10 +5,10 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Models.ToDoTasks
+namespace Client.Models.ToDoTasks
 {
     [DataContract]
-    public class TodoTaskPatchInfo
+    public class ToDoTaskPatchInfo
     {
         /// <summary>
         /// Новый заголовок задачи
@@ -21,4 +21,14 @@ namespace Models.ToDoTasks
         /// </summary>
         [DataMember(IsRequired = false)]
         public string Text { get; set; }
+
+        [DataMember(IsRequired = false)]
+        public DateTime EndAt { get; set; }
+
+        [DataMember(IsRequired = false)]
+        public bool IsDone { get; set; }
+
+        [DataMember(IsRequired = false)]
+        public ToDoTaskPriority Priority { get; set; }
     }
+}

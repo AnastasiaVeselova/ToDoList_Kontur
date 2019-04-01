@@ -11,8 +11,7 @@ namespace Models.ToDoTasks
     public class ToDoTaskInfo
     {
         [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
-        public string Id { get; set; }
+        public Guid Id { get; set; }
 
         [BsonElement("UserId")]
         public Guid UserId { get; set; }
@@ -23,13 +22,16 @@ namespace Models.ToDoTasks
         [BsonElement("LastUpdatedAt")]
         public DateTime LastUpdatedAt { get; set; }
 
-        [BsonElement("Favorite")]
-        public bool Favorite { get; set; }
-
         [BsonElement("Title")]
         public string Title { get; set; }
 
-        [BsonElement("Tags")]
-        public IReadOnlyList<string> Tags { get; set; }
+        [BsonElement("EndAt")]
+        public DateTime EndAt { get; set; }
+
+        [BsonElement("IsDone")]
+        public bool IsDone { get; set; }
+
+        [BsonElement("Priority")]
+        public ToDoTaskPriority Priority { get; set; }
     }
 }

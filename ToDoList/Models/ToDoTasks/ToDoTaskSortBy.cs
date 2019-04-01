@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Models.ToDoTasks
 {
-    public enum NoteSortBy
+    public enum ToDoTaskSortBy
     {
         /// <summary>
         /// Сортировкаи по дате создания

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Models.ToDoTasks
+namespace Client.Models.ToDoTasks
 {
     /// <summary>
     /// Информация о задаче
@@ -36,9 +36,11 @@ namespace Models.ToDoTasks
         /// </summary>
         public string Title { get; set; }
 
-        /// <summary>
-        /// Теги задачи
-        /// </summary>
-        public IReadOnlyList<string> Tags { get; set; }
+        public DateTime EndAt { get; set; }
+
+        public bool IsDone { get; set; }
+
+        public ToDoTaskPriority Priority { get; set; }
+
     }
 }

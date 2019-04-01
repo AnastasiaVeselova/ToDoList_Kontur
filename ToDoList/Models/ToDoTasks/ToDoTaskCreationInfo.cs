@@ -18,12 +18,13 @@ namespace Models.ToDoTasks
         /// <param name="title">Заголовок заметки</param>
         /// <param name="text">Текст заметки</param>
         /// <param name="tags">Теги заметки</param>
-        public TodoTaskCreationInfo(Guid userId, string title, string text, IEnumerable<string> tags = null)
+        public TodoTaskCreationInfo(Guid userId, string title, string text, DateTime endAt,  ToDoTaskPriority priority = ToDoTaskPriority.Normal)
         {
             this.UserId = userId;
             this.Title = title ?? throw new ArgumentNullException(nameof(title));
             this.Text = text ?? throw new ArgumentNullException(nameof(text));
-            this.Tags = tags?.ToArray() ?? new string[] { };
+            this.EndAt = endAt;
+            this.Priority = priority;
         }
 
         /// <summary>
@@ -41,9 +42,8 @@ namespace Models.ToDoTasks
         /// </summary>
         public string Text { get; }
 
-        /// <summary>
-        /// Теги заметки
-        /// </summary>
-        public IReadOnlyList<string> Tags { get; }
+        public DateTime EndAt { get; set; }
+
+        public ToDoTaskPriority Priority { get; set; }
     }
 }

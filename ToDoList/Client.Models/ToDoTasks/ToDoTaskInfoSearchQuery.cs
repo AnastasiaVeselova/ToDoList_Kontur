@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Models.ToDoTasks
+namespace Client.Models.ToDoTasks
 {
     public class ToDoTaskInfoSearchQuery
     {
@@ -41,11 +41,12 @@ namespace Models.ToDoTasks
         /// <summary>
         /// Аспект задач, по которому нужно искать
         /// </summary>
-        public TodoSortBy? SortBy { get; set; }
+        public ToDoTaskSortBy? SortBy { get; set; }
 
-        /// <summary>
-        /// Теги задач
-        /// </summary>
-        public IReadOnlyList<string> Tags { get; set; }
+        public DateTime? EndAt { get; set; }
+
+        public bool? IsDone { get; set; }
+
+        public ToDoTaskPriority? Priority { get; set; }
     }
 }
