@@ -16,8 +16,8 @@ namespace Models.ToDoTasks.Services
 
         public ToDoTaskService(IConfiguration config)
         {
-            var client = new MongoClient(config.GetConnectionString("ToDoListDB"));
-            var database = client.GetDatabase("ToDoListDB");
+            var client = new MongoClient(config.GetConnectionString("ToDoTasksDB"));
+            var database = client.GetDatabase("ToDoTasksDB");
             _toDoTasks = database.GetCollection<ToDoTask>("ToDoTasks");
         }
 

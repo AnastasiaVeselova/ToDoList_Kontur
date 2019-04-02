@@ -12,7 +12,7 @@ namespace Client.Models.ToDoTasks
     /// Информация для создания задачи
     /// </summary>
     [DataContract]
-    public class ToDoBuildInfo
+    public class ToDoTasksBuildInfo
     {
         /// <summary>
         /// Заголовок задачи
@@ -29,7 +29,7 @@ namespace Client.Models.ToDoTasks
         [DataMember(IsRequired = true)]
         public DateTime EndAt { get; set; }
 
-        [DataMember(IsRequired = false)]
-        public ToDoTaskPriority Priority { get; set; }
+        /*[DataMember(IsRequired = false)]
+        public ToDoTaskPriority Priority { get; set; }*/
     }
 }

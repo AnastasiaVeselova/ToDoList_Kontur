@@ -7,9 +7,9 @@ namespace Models.Converters.ToDoTasks
     using Client = Client.Models.ToDoTasks;
     using Model = Models.ToDoTasks;
 
-    public static class ToDoTaskCreateInfoConverter
+    public static class ToDoTaskBuildInfoConverter
     {
-        public static Model.TodoTaskCreationInfo Convert(string clientUserId, Client.ToDoBuildInfo clientBuildInfo)
+        public static Model.TodoTaskCreationInfo Convert(string clientUserId, Client.ToDoTasksBuildInfo clientBuildInfo)
         {
             if (clientUserId == null)
             {
@@ -26,7 +26,7 @@ namespace Models.Converters.ToDoTasks
                 throw new ArgumentException($"The client user id \"{clientUserId}\" is invalid.", nameof(clientUserId));
             }
 
-            return new Model.TodoTaskCreationInfo(modelUserId,clientBuildInfo.Title, clientBuildInfo.Text, clientBuildInfo.EndAt, ToDoTaskPriorityConverter.Convert(clientBuildInfo.Priority));
+            return new Model.TodoTaskCreationInfo(modelUserId,clientBuildInfo.Title, clientBuildInfo.Text, clientBuildInfo.EndAt/*, ToDoTaskPriorityConverter.Convert(clientBuildInfo.Priority)*/);
         }
     }
 }

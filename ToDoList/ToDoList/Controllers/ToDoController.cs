@@ -1,39 +1,42 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Models.Converters.ToDoTasks;
 using Models.ToDoTasks;
+using Models.Converters.ToDoTasks;
 
-namespace ToDoList.Controllers
+namespace ToDoListAPI.Controllers
 {
+    // [Authorize]
     [Route("api/[controller]")]
-    //[ApiController]
-    public class ToDoTasksController : ControllerBase
+    public class TasksController : Controller
     {
         private readonly IToDoTaskService tasks;
 
-        public ToDoTasksController(IToDoTaskService taskRepository)
+        public TasksController(IToDoTaskService taskRepository)
         {
             this.tasks = taskRepository;
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateTaskAsync([FromBody] Client.Models.ToDoTasks.ToDoTasksBuildInfo creationInfo, CancellationToken cancellationToken)
+        public async Task<IActionResult> CreateTaskAsync([FromBody] Client.Models.ToDoTasks.ToDoTasksBuildInfo buildInfo, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            if (creationInfo == null)
+            if (buildInfo == null)
             {
                 return this.BadRequest();
             }
 
             var userId = Guid.Empty.ToString();
+            //var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            var modelCreationInfo = ToDoTaskBuildInfoConverter.Convert(userId, creationInfo);
+            //var userId = HttpContext.Items["userId"].ToString();
+            var modelCreationInfo = ToDoTaskBuildInfoConverter.Convert(userId, buildInfo);
             var modelTaskInfo = await this.tasks.CreateAsync(modelCreationInfo, cancellationToken);
             var clientTaskInfo = ToDoTaskInfoConverter.Convert(modelTaskInfo);
 
@@ -42,12 +45,12 @@ namespace ToDoList.Controllers
                 { "taskId", clientTaskInfo.Id }
             };
 
-            var res = CreatedAtAction("GetTaskRouteee", new { id = clientTaskInfo.Id }, clientTaskInfo);
-            return this.Ok(clientTaskInfo);
+            var a = this.CreatedAtRoute("GetTaskRoute", routeParams, clientTaskInfo);
+            return a;
         }
 
         [HttpGet]
-        [Route("{taskId}", Name = "GetTaskRouteee")]
+        [Route("{taskId}", Name = "GetTaskRoute")]
         public async Task<IActionResult> GetTaskAsync([FromRoute] string taskId, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
