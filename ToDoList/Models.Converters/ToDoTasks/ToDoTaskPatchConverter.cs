@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Models.Converters.Tasks
+namespace Models.Converters.ToDoTasks
 {
     using Client = Client.Models.ToDoTasks;
     using Model = Models.ToDoTasks;

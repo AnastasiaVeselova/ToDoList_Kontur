@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Models.Converters.Tasks
+namespace Models.Converters.ToDoTasks
 {
     using Client = Client.Models.ToDoTasks;
     using Model = Models.ToDoTasks;
 
     public static class ToDoTaskCreateInfoConverter
     {
-        public static Model.TodoTaskCreationInfo Convert(string clientUserId, Client.TodoBuildInfo clientBuildInfo)
+        public static Model.TodoTaskCreationInfo Convert(string clientUserId, Client.ToDoBuildInfo clientBuildInfo)
         {
             if (clientUserId == null)
             {
