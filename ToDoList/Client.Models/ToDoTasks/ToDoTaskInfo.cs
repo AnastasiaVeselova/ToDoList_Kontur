@@ -42,8 +42,7 @@ namespace Client.Models.ToDoTasks
 
         public bool IsDone { get; set; }
 
-        /*[JsonConverter(typeof(StringEnumConverter))]
-        public ToDoTaskPriority Priority { get; set; }*/
+        public ToDoTaskPriority Priority { get; set; }
 
     }
 }

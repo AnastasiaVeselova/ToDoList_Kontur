@@ -26,7 +26,7 @@ namespace Models.Converters.ToDoTasks
                 throw new ArgumentException($"The client user id \"{clientUserId}\" is invalid.", nameof(clientUserId));
             }
 
-            return new Model.TodoTaskCreationInfo(modelUserId,clientBuildInfo.Title, clientBuildInfo.Text, clientBuildInfo.EndAt/*, ToDoTaskPriorityConverter.Convert(clientBuildInfo.Priority)*/);
+            return new Model.TodoTaskCreationInfo(modelUserId,clientBuildInfo.Title, clientBuildInfo.Text, clientBuildInfo.EndAt, ToDoTaskPriorityConverter.Convert(clientBuildInfo.Priority));
         }
     }
 }

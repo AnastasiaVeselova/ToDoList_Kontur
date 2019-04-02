@@ -86,16 +86,6 @@ namespace ToDoListAPI.Controllers
                 return NotFound();
             }
 
-            Models.ToDoTasks.ToDoTask task = null;
-            try
-            {
-                task = await this.tasks.GetAsync(taskGuid, cancellationToken);
-            }
-            catch (Models.ToDoTasks.ToDoTaskNotFoundException)
-            {
-                return this.NotFound();
-            }
-
             try
             {
                 await tasks.RemoveAsync(taskGuid, cancellationToken);
@@ -106,6 +96,38 @@ namespace ToDoListAPI.Controllers
             }
 
             return NoContent();
+        }
+
+        [HttpPatch]
+        [Route("{taskId}")]
+        public async Task<IActionResult> PatchTaskAsync([FromRoute] string taskId, [FromBody]Client.Models.ToDoTasks.ToDoTaskPatchInfo patchInfo, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            if (patchInfo == null)
+            {
+                return BadRequest();
+            }
+            if (!Guid.TryParse(taskId, out var taskGuid))
+            {
+                return NotFound();
+            }
+
+            var modelPatchInfo = ToDoTaskPatchConverter.Convert(taskGuid, patchInfo);
+
+            Models.ToDoTasks.ToDoTask patchTask = null;
+
+            try
+            {
+                patchTask = await tasks.PatchAsync(modelPatchInfo, cancellationToken);
+            }
+            catch (Models.ToDoTasks.ToDoTaskNotFoundException)
+            {
+                return NotFound();
+            }
+
+            var clientTask = ToDoTaskConverter.Convert(patchTask);
+            return Ok(clientTask);
         }
     }
 }

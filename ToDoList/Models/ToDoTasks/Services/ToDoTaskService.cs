@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
@@ -52,7 +53,7 @@ namespace Models.ToDoTasks.Services
 
         public Task<ToDoTask> GetAsync(Guid toDoTaskId, CancellationToken cancellationToken)
         {
-            cancellationToken.ThrowIfCancellationRequested();
+            cancellationToken.ThrowIfCancellationRequested();           
 
             var task = _toDoTasks.Find<ToDoTask>(t => t.Id == toDoTaskId).FirstOrDefault();
 
@@ -62,6 +63,21 @@ namespace Models.ToDoTasks.Services
             }
 
             return Task.FromResult(task);
+        }
+
+        public Task RemoveAsync(Guid taskId, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            var task = _toDoTasks.Find<ToDoTask>(t => t.Id == taskId).FirstOrDefault();
+            if (task == null)
+            {
+                throw new ToDoTaskNotFoundException(taskId);
+            }
+
+            _toDoTasks.DeleteOne<ToDoTask>(t => t.Id == taskId);
+
+            return Task.CompletedTask;
         }
 
         public Task<ToDoTask> PatchAsync(ToDoTaskPatchInfo patchInfo, CancellationToken cancellationToken)
@@ -111,26 +127,12 @@ namespace Models.ToDoTasks.Services
             if (updated)
             {
                 task.LastUpdatedAt = DateTime.UtcNow;
-                _toDoTasks.ReplaceOne(t => t.Id == task.Id, task);
             }
 
             return Task.FromResult(task);
         }
 
-        public Task RemoveAsync(Guid taskId, CancellationToken cancellationToken)
-        {
-            cancellationToken.ThrowIfCancellationRequested();
-
-            var task = _toDoTasks.Find<ToDoTask>(t => t.Id == taskId).FirstOrDefault();
-            if (task == null)
-            {
-                throw new ToDoTaskNotFoundException(taskId);
-            }
-
-            _toDoTasks.DeleteOne<ToDoTask>(t => t.Id == taskId);
-
-            return Task.CompletedTask;
-        }
+        
 
         public Task<IReadOnlyList<ToDoTaskInfo>> SearchAsync(ToDoTaskInfoSearchQuery query, CancellationToken cancelltionToken)
         {

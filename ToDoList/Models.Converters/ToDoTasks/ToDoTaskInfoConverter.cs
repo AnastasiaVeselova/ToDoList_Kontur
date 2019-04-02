@@ -23,7 +23,7 @@ namespace Models.Converters.ToDoTasks
                 Title = modelTaskInfo.Title,
                 CreatedAt = modelTaskInfo.CreatedAt,
                 LastUpdatedAt = modelTaskInfo.LastUpdatedAt,
-                //Priority = ToDoTaskPriorityConverter.Convert(modelTaskInfo.Priority),
+                Priority = ToDoTaskPriorityConverter.Convert(modelTaskInfo.Priority),
                 IsDone = modelTaskInfo.IsDone,
                 EndAt = modelTaskInfo.EndAt
             };
