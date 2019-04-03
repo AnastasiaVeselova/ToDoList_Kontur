@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Models.ToDoTasks;
 using Models.Converters.ToDoTasks;
 
-namespace ToDoListAPI.Controllers
+namespace ToDoList.Controllers
 {
     // [Authorize]
     [Route("api/[controller]")]

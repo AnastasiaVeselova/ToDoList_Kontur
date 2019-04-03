@@ -138,6 +138,8 @@
     <Compile Include="ToDoTasks\ToDoTaskPatchInfo.cs" />
     <Compile Include="ToDoTasks\ToDoTaskPriority.cs" />
     <Compile Include="ToDoTasks\ToDoTaskSortBy.cs" />
+    <Compile Include="Users\Services\IUserService.cs" />
+    <Compile Include="Users\Services\UserService.cs" />
     <Compile Include="Users\User.cs" />
     <Compile Include="Users\UserCreationInfo.cs" />
     <Compile Include="Users\UserDuplicationException.cs" />
@@ -147,5 +149,6 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

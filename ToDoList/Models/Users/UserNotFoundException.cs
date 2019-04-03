@@ -7,25 +7,25 @@ using System.Threading.Tasks;
 namespace Models.Users
 {
     /// <summary>
-    /// Исключение, которое возникает при попытке получить несуществующую заметку
+    /// Исключение, которое возникает при попытке получить несуществующего пользователя
     /// </summary>
-    public class NoteNotFoundExcepction : Exception
+    public class UserNotFoundException : Exception
     {
         /// <summary>
-        /// Создает новый экземпляр исключения о том, что заметка не найдена
+        /// Инициализировать экземпляр исключения по идентификатору пользователя
         /// </summary>
-        /// <param name="message">Сообщение об ошибке</param>
-        public NoteNotFoundExcepction(string message)
-            : base(message)
+        /// <param name="userId"></param>
+        public UserNotFoundException(Guid userId)
+            : base($"A user by id \"{userId}\" is not found.")
         {
         }
 
         /// <summary>
-        /// Создает новый экземпляр исключения о том, что заметка не найдена
+        /// Инициализировать экземпляр исключения по логину пользователя
         /// </summary>
-        /// <param name="noteId">Идентификатор заметки, которая не найдена</param>
-        public NoteNotFoundExcepction(Guid noteId)
-            : base($"Note \"{noteId}\" is not found.")
+        /// <param name="login"></param>
+        public UserNotFoundException(string login)
+            : base($"A user by login \"{login}\" is not found.")
         {
         }
     }

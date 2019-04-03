@@ -50,6 +50,7 @@
     <Compile Include="ToDoTasks\ToDoTaskPatchConverter.cs" />
     <Compile Include="ToDoTasks\ToDoTaskPriorityConverter.cs" />
     <Compile Include="ToDoTasks\ToDoTaskSortByConverter.cs" />
+    <Compile Include="Users\UserConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Client.Models\Client.Models.csproj">
