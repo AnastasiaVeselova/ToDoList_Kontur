@@ -49,7 +49,5 @@ namespace Models.ToDoTasks
         public ToDoTaskPriority? Priority { get; set; }
 
         public DateTime? EndAt { get; set; }
-
-        public bool? IsDone { get; set; }
     }
 }

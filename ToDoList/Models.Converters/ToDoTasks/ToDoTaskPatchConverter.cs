@@ -21,7 +21,6 @@ namespace Models.Converters.ToDoTasks
                 clientPatch.Title,
                 clientPatch.Text,
                 clientPatch.EndAt,
-                clientPatch.IsDone,
                 ToDoTaskPriorityConverter.Convert(clientPatch.Priority));
         }
     }

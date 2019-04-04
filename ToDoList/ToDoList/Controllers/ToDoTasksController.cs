@@ -40,8 +40,21 @@ namespace ToDoList.Controllers
 
             var userIdClame = this.HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier);
 
-            var modelCreationInfo = ToDoTaskBuildInfoConverter.Convert(userIdClame.Value, buildInfo);
+            User user = null;
+
+            try
+            {
+                user = await users.GetAsync(userIdClame.Value, cancellationToken);
+            }
+            catch
+            {
+                return BadRequest();
+            }
+
+            var modelCreationInfo = ToDoTaskBuildInfoConverter.Convert(user.Id.ToString(), buildInfo);
+
             var modelTaskInfo = await this.tasks.CreateAsync(modelCreationInfo, cancellationToken);
+
             var clientTaskInfo = ToDoTaskInfoConverter.Convert(modelTaskInfo);
 
             var routeParams = new Dictionary<string, object>
@@ -77,11 +90,6 @@ namespace ToDoList.Controllers
                 return BadRequest();
             }
 
-            if (user.Id != modelToDoTaskId)
-            {
-                return NotFound();
-            }
-
             ToDoTask modelTask = null;
 
             try
@@ -91,6 +99,12 @@ namespace ToDoList.Controllers
             catch (Models.ToDoTasks.ToDoTaskNotFoundException)
             {
                 return this.NotFound();
+            }
+
+
+            if (user.Id != modelTask.UserId)
+            {
+                return NotFound();
             }
 
             var clientTask = ToDoTaskConverter.Convert(modelTask);
@@ -122,7 +136,19 @@ namespace ToDoList.Controllers
                 return BadRequest();
             }
 
-            if (user.Id != modelToDoTaskId)
+            ToDoTask modelTask = null;
+
+            try
+            {
+                modelTask = await this.tasks.GetAsync(modelToDoTaskId, cancellationToken);
+            }
+            catch (Models.ToDoTasks.ToDoTaskNotFoundException)
+            {
+                return this.NotFound();
+            }
+
+
+            if (user.Id != modelTask.UserId)
             {
                 return NotFound();
             }
@@ -145,18 +171,44 @@ namespace ToDoList.Controllers
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            if (patchInfo == null)
-            {
-                return BadRequest();
-            }
-            if (!Guid.TryParse(taskId, out var taskGuid))
+            if (!Guid.TryParse(taskId, out var modelToDoTaskId))
             {
                 return NotFound();
             }
 
-            var modelPatchInfo = ToDoTaskPatchConverter.Convert(taskGuid, patchInfo);
+            var loginIdentifier = this.HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier);
 
-            Models.ToDoTasks.ToDoTask patchTask = null;
+            User user = null;
+
+            try
+            {
+                user = await users.GetAsync(loginIdentifier.Value, cancellationToken);
+            }
+            catch
+            {
+                return BadRequest();
+            }
+
+            ToDoTask modelTask = null;
+
+            try
+            {
+                modelTask = await this.tasks.GetAsync(modelToDoTaskId, cancellationToken);
+            }
+            catch (Models.ToDoTasks.ToDoTaskNotFoundException)
+            {
+                return this.NotFound();
+            }
+
+
+            if (user.Id != modelTask.UserId)
+            {
+                return NotFound();
+            }
+
+            var modelPatchInfo = ToDoTaskPatchConverter.Convert(modelToDoTaskId, patchInfo);
+
+           ToDoTask patchTask = null;
 
             try
             {

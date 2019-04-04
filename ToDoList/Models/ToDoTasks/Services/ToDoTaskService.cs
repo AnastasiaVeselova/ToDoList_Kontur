@@ -13,13 +13,13 @@ namespace Models.ToDoTasks.Services
 {
     public class ToDoTaskService : IToDoTaskService
     {
-        private readonly IMongoCollection<ToDoTask> _toDoTasks;
+        private readonly IMongoCollection<ToDoTask> toDoTasks;
 
         public ToDoTaskService(IConfiguration config)
         {
             var client = new MongoClient(config.GetConnectionString("ToDoTasksDB"));
             var database = client.GetDatabase("ToDoTasksDB");
-            _toDoTasks = database.GetCollection<ToDoTask>("ToDoTasks");
+            toDoTasks = database.GetCollection<ToDoTask>("ToDoTasks");
         }
 
         public Task<ToDoTaskInfo> CreateAsync(TodoTaskCreationInfo creationInfo, CancellationToken cancellationToken)
@@ -39,14 +39,13 @@ namespace Models.ToDoTasks.Services
                 UserId = creationInfo.UserId,
                 CreatedAt = now,
                 LastUpdatedAt = now,
-                IsDone = false,
                 Title = creationInfo.Title,
                 Text = creationInfo.Text,
                 Priority = creationInfo.Priority,
                 EndAt = creationInfo.EndAt
             };
 
-            _toDoTasks.InsertOne(todoTask);
+            toDoTasks.InsertOne(todoTask);
 
             return Task.FromResult<ToDoTaskInfo>(todoTask);
         }
@@ -55,7 +54,7 @@ namespace Models.ToDoTasks.Services
         {
             cancellationToken.ThrowIfCancellationRequested();           
 
-            var task = _toDoTasks.Find<ToDoTask>(t => t.Id == toDoTaskId).FirstOrDefault();
+            var task = toDoTasks.Find<ToDoTask>(t => t.Id == toDoTaskId).FirstOrDefault();
 
             if (task == null)
             {
@@ -69,13 +68,13 @@ namespace Models.ToDoTasks.Services
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            var task = _toDoTasks.Find<ToDoTask>(t => t.Id == taskId).FirstOrDefault();
+            var task = toDoTasks.Find<ToDoTask>(t => t.Id == taskId).FirstOrDefault();
             if (task == null)
             {
                 throw new ToDoTaskNotFoundException(taskId);
             }
 
-            _toDoTasks.DeleteOne<ToDoTask>(t => t.Id == taskId);
+            toDoTasks.DeleteOne<ToDoTask>(t => t.Id == taskId);
 
             return Task.CompletedTask;
         }
@@ -89,7 +88,7 @@ namespace Models.ToDoTasks.Services
 
             cancellationToken.ThrowIfCancellationRequested();
 
-            var task = _toDoTasks.Find<ToDoTask>(t => t.Id == patchInfo.Id).FirstOrDefault();
+            var task = toDoTasks.Find<ToDoTask>(t => t.Id == patchInfo.Id).FirstOrDefault();
 
             if (task == null)
             {
@@ -118,15 +117,11 @@ namespace Models.ToDoTasks.Services
                 task.EndAt = patchInfo.EndAt.Value;
                 updated = true;
             }
-            if (patchInfo.IsDone != null)
-            {
-                task.IsDone = patchInfo.IsDone.Value;
-                updated = true;
-            }
 
             if (updated)
             {
                 task.LastUpdatedAt = DateTime.UtcNow;
+                toDoTasks.ReplaceOne(t => t.Id == task.Id, task);
             }
 
             return Task.FromResult(task);

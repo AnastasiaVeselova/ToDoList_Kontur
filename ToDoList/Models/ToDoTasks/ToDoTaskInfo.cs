@@ -28,9 +28,6 @@ namespace Models.ToDoTasks
         [BsonElement("EndAt")]
         public DateTime EndAt { get; set; }
 
-        [BsonElement("IsDone")]
-        public bool IsDone { get; set; }
-
         [BsonElement("Priority")]
         public ToDoTaskPriority Priority { get; set; }
     }

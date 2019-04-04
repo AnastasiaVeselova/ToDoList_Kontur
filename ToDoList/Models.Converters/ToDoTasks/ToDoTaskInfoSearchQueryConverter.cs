@@ -38,7 +38,6 @@ namespace Models.Converters.ToDoTasks
 
                 Priority = priority,
                 EndAt = clientQuery.EndAt,
-                IsDone = clientQuery.IsDone,
 
                 Sort = modelSort,
                 SortBy = modelSortBy

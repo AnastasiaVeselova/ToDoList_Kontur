@@ -8,9 +8,6 @@ namespace Client.Models.ToDoTasks
 {
     public class ToDoTask : ToDoTaskInfo
     {
-        /// <summary>
-        /// Описание задачи
-        /// </summary>
         public string Text { get; set; }
     }
 }

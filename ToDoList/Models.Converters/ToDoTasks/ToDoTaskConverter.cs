@@ -26,7 +26,6 @@ namespace Models.Converters.ToDoTasks
                 CreatedAt = modelTask.CreatedAt,
                 LastUpdatedAt = modelTask.LastUpdatedAt,
                 Priority = ToDoTaskPriorityConverter.Convert(modelTask.Priority),
-                IsDone = modelTask.IsDone,
                 EndAt = modelTask.EndAt,
             };
         }
