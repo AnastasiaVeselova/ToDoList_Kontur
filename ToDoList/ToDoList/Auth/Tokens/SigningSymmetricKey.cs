@@ -5,23 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ToDoList.Auth.JWT
+namespace ToDoList.Auth.Tokens
 {
     //https://andrey.moveax.ru/post/asp-net-core-web-api-authentication-part-2-jwt-based-on-jws
-
-    // Ключ для создания подписи (приватный)
-    public interface IJwtSigningEncodingKey
-    {
-        string SigningAlgorithm { get; }
-
-        SecurityKey GetKey();
-    }
-
-    // Ключ для проверки подписи (публичный)
-    public interface IJwtSigningDecodingKey
-    {
-        SecurityKey GetKey();
-    }
 
     public class SigningSymmetricKey : IJwtSigningEncodingKey, IJwtSigningDecodingKey
     {

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Models.Converters.Users;
 using Models.Users;
 using Models.Users.Services;
 using System;
@@ -11,23 +12,15 @@ using System.Threading.Tasks;
 namespace ToDoList.Controllers
 {
     [Route("api/[controller]")]
-    //[ApiController]
     public class RegistrationController : Controller
     {
-        private readonly IUserService _users;
+        private readonly IUserService users;
 
-        public RegistrationController(IUserService _users)
+        public RegistrationController(IUserService users)
         {
-            this._users = _users;
+            this.users = users;
         }
 
-        [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
-
-        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Register([FromBody] Client.Models.Users.UserRegistrationInfo registrationInfo, CancellationToken cancellationToken)
         {
@@ -41,14 +34,16 @@ namespace ToDoList.Controllers
             User user = null;
             try
             {
-                user = await _users.CreateAsync(creationInfo, cancellationToken);
+                user = await users.CreateAsync(creationInfo, cancellationToken);
             }
             catch (UserDuplicationException exception)
             {
                 return BadRequest(exception);
             }
 
-            return Ok(user);
+            var clientUser = UserConverter.Convert(user);
+
+            return Ok(clientUser);
         }
     }
 }

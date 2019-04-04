@@ -9,7 +9,7 @@ namespace Models.Converters.ToDoTasks
 
     public static class ToDoTaskBuildInfoConverter
     {
-        public static Model.TodoTaskCreationInfo Convert(string clientUserId, Client.ToDoTasksBuildInfo clientBuildInfo)
+        public static Model.TodoTaskCreationInfo Convert(string clientUserId, Client.ToDoTaskBuildInfo clientBuildInfo)
         {
             if (clientUserId == null)
             {

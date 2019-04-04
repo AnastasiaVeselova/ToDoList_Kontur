@@ -12,7 +12,7 @@ namespace Client.Models.ToDoTasks
     /// Информация для создания задачи
     /// </summary>
     [DataContract]
-    public class ToDoTasksBuildInfo
+    public class ToDoTaskBuildInfo
     {
         /// <summary>
         /// Заголовок задачи

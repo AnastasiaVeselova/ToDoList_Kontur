@@ -14,7 +14,8 @@ using Microsoft.IdentityModel.Tokens;
 using Models.ToDoTasks;
 using Models.ToDoTasks.Services;
 using Models.Users.Services;
-using ToDoList.Auth.JWT;
+using ToDoList.Auth;
+using ToDoList.Auth.Tokens;
 
 namespace ToDoList
 {
@@ -30,42 +31,39 @@ namespace ToDoList
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            const string signingSecurityKey = "0d5b3235a8b403c3dab9c3f4f65c07fcalskd234n1k41230";
-            var signingKey = new SigningSymmetricKey(signingSecurityKey);
+            //const string signingSecurityKey = "0d5b3235a8b403c3dab9c3f4f65c07fcalskd234n1k41230";
+            var signingKey = new SigningSymmetricKey(AuthOptions.KEY);
             services.AddSingleton<IJwtSigningEncodingKey>(signingKey);
 
             services.AddScoped<IToDoTaskService, ToDoTaskService>();
             services.AddScoped<IUserService, UserService>();
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-
-            const string jwtSchemeName = "JwtBearer";
             var signingDecodingKey = (IJwtSigningDecodingKey)signingKey;
+
             services
-                .AddAuthentication(options =>
+                .AddAuthentication()
+                .AddJwtBearer(options =>
                 {
-                    options.DefaultAuthenticateScheme = jwtSchemeName;
-                    options.DefaultChallengeScheme = jwtSchemeName;
-                })
-                .AddJwtBearer(jwtSchemeName, jwtBearerOptions =>
-                {
-                    jwtBearerOptions.TokenValidationParameters = new TokenValidationParameters
+                    //jwtBearerOptions.SaveToken = true;
+                    options.RequireHttpsMetadata = true;
+
+                    options.TokenValidationParameters = new TokenValidationParameters
                     {
-                        ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = signingDecodingKey.GetKey(),
+                        ValidateIssuer = false,
 
-                        ValidateIssuer = true,
-                        ValidIssuer = "ToDoTasks",
-
-                        ValidateAudience = true,
-                        ValidAudience = "ToDoTasksClient",
+                        ValidateAudience = false,
 
                         ValidateLifetime = true,
 
-                        ClockSkew = TimeSpan.FromSeconds(5)
+                        ValidateIssuerSigningKey = true,
+
+                        IssuerSigningKey = signingDecodingKey.GetKey()
                     };
                 });
+
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
+
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -79,5 +77,6 @@ namespace ToDoList
             app.UseHttpsRedirection();
             app.UseMvc();
         }
+
     }
 }
