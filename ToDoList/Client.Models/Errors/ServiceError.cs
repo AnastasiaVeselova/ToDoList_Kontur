@@ -1,4 +1,4 @@
-﻿namespace Notes.Client.Errors
+﻿namespace Client.Models.Errors
 {
     using System;
     using System.Collections.Generic;

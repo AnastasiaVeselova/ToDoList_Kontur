@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using Models.Converters.Users;
 using Models.Users;
 using Models.Users.Services;
 using Newtonsoft.Json;
@@ -63,11 +64,14 @@ namespace ToDoList.Controllers
                 return BadRequest(error);
             }
 
+            var clientUser = UserConverter.Convert(user);
+
             var claims = new Claim[]
             {
-                new Claim(ClaimTypes.NameIdentifier, userInfo.Login),
-                //new Claim(ClaimTypes, userInfo.Login),
-            };
+                new Claim(ClaimTypes.Name, clientUser.Login),
+
+                new Claim(ClaimTypes.NameIdentifier, clientUser.Id),
+        };
 
             var token = new JwtSecurityToken(
                 //issuer: "ToDoTasksApp",

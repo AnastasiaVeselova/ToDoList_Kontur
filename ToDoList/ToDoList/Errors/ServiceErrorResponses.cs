@@ -3,17 +3,17 @@ using System.Net;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Notes.Client.Errors;
+using Client.Models.Errors;
 
 namespace ToDoList.Errors
 {
     public static class ServiceErrorResponses
     {
-        public static ServiceErrorResponse ToDoTaskNotFound(string noteId)
+        public static ServiceErrorResponse ToDoTaskNotFound(string todoTaskId)
         {
-            if (noteId == null)
+            if (todoTaskId == null)
             {
-                throw new ArgumentNullException(nameof(noteId));
+                throw new ArgumentNullException(nameof(todoTaskId));
             }
 
             var error = new ServiceErrorResponse
@@ -22,8 +22,8 @@ namespace ToDoList.Errors
                 Error = new ServiceError
                 {
                     Code = ServiceErrorCodes.NotFound,
-                    Message = $"A note with \"{noteId}\" not found.",
-                    Target = "note"
+                    Message = $"A todoTask with \"{todoTaskId}\" not found.",
+                    Target = "todoTask"
                 }
             };
 
@@ -113,6 +113,22 @@ namespace ToDoList.Errors
                     Code = ServiceErrorCodes.ValidationError,
                     Message = $"Wrong password entered.",
                     Target = "password"
+                }
+            };
+
+            return error;
+        }
+
+        public static ServiceErrorResponse AccessDenied()
+        {
+            var error = new ServiceErrorResponse
+            {
+                StatusCode = HttpStatusCode.Forbidden,
+                Error = new ServiceError
+                {
+                    Code = ServiceErrorCodes.Forbidden,
+                    Message = $"No access to the requested resource.",
+                    Target = "toDoTask"
                 }
             };
 

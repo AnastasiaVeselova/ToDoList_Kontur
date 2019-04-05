@@ -19,15 +19,13 @@ namespace ToDoList.Controllers
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 
     [Route("api/[controller]")]
-    public class ToDoTasksController : Controller
+    public class ToDoTasksV2Controller : Controller
     {
         private readonly IToDoTaskService tasks;
-        private readonly IUserService users;
 
-        public ToDoTasksController(IToDoTaskService tasks, IUserService users)
+        public ToDoTasksV2Controller(IToDoTaskService tasks)
         {
             this.tasks = tasks;
-            this.users = users;
         }
 
         [HttpPost]
@@ -41,22 +39,9 @@ namespace ToDoList.Controllers
                 return this.BadRequest(error);
             }
 
-            var userLoginRequest = this.HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name);
+            var userIdClame = this.HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier);
 
-            User user = null;
-
-            try
-            {
-                user = await users.GetAsync(userLoginRequest.Value, cancellationToken);
-            }
-            catch
-            {
-                var error = ServiceErrorResponses.UserNotFound(userLoginRequest.Value);
-                return BadRequest(error);
-            }
-
-            //добавить try-catch в случае если аргументы null
-            var modelCreationInfo = ToDoTaskBuildInfoConverter.Convert(user.Id.ToString(), buildInfo);
+            var modelCreationInfo = ToDoTaskBuildInfoConverter.Convert(userIdClame.Value, buildInfo);
 
             var modelTaskInfo = await this.tasks.CreateAsync(modelCreationInfo, cancellationToken);
 
@@ -67,11 +52,11 @@ namespace ToDoList.Controllers
                 { "taskId", clientTaskInfo.Id }
             };
 
-            return this.CreatedAtRoute("GetTaskRoute", routeParams, clientTaskInfo);
+            return this.CreatedAtRoute("GetTaskRouteV2", routeParams, clientTaskInfo);
         }
 
         [HttpGet]
-        [Route("{taskId}", Name = "GetTaskRoute")]
+        [Route("{taskId}", Name = "GetTaskRouteV2")]
         public async Task<IActionResult> GetTaskAsync([FromRoute] string taskId, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -81,21 +66,7 @@ namespace ToDoList.Controllers
                 var error = ServiceErrorResponses.ToDoTaskNotFound(taskId);
                 return this.NotFound(error);
             }
-
-            var userLoginRequest = this.HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name);
-
-            User user = null;
-
-            try
-            {
-                user = await users.GetAsync(userLoginRequest.Value, cancellationToken);
-            }
-            catch
-            {
-                var error = ServiceErrorResponses.UserNotFound(userLoginRequest.Value);
-                return BadRequest(error);
-            }
-
+          
             ToDoTask modelTask = null;
 
             try
@@ -108,15 +79,16 @@ namespace ToDoList.Controllers
                 return NotFound(error);
             }
 
+            var clientTask = ToDoTaskConverter.Convert(modelTask);
 
-            if (user.Id != modelTask.UserId)
+            var userIdRequest = this.HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier);
+
+            if (userIdRequest.Value != clientTask.UserId)
             {
                 var error = ServiceErrorResponses.AccessDenied();
                 return StatusCode(StatusCodes.Status403Forbidden, error);
             }
-
-            var clientTask = ToDoTaskConverter.Convert(modelTask);
-
+           
             return this.Ok(clientTask);
         }
 
@@ -132,20 +104,6 @@ namespace ToDoList.Controllers
                 return this.NotFound(error);
             }
 
-            var userLoginRequest = this.HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name);
-
-            User user = null;
-
-            try
-            {
-                user = await users.GetAsync(userLoginRequest.Value, cancellationToken);
-            }
-            catch
-            {
-                var error = ServiceErrorResponses.UserNotFound(userLoginRequest.Value);
-                return BadRequest(error);
-            }
-
             ToDoTask modelTask = null;
 
             try
@@ -158,8 +116,11 @@ namespace ToDoList.Controllers
                 return NotFound(error);
             }
 
+            var clientTask = ToDoTaskConverter.Convert(modelTask);
 
-            if (user.Id != modelTask.UserId)
+            var userIdRequest = this.HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier);
+
+            if (userIdRequest.Value != clientTask.UserId)
             {
                 var error = ServiceErrorResponses.AccessDenied();
                 return StatusCode(StatusCodes.Status403Forbidden, error);
@@ -190,20 +151,6 @@ namespace ToDoList.Controllers
                 return this.NotFound(error);
             }
 
-            var userLoginRequest = this.HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name);
-
-            User user = null;
-
-            try
-            {
-                user = await users.GetAsync(userLoginRequest.Value, cancellationToken);
-            }
-            catch
-            {
-                var error = ServiceErrorResponses.UserNotFound(userLoginRequest.Value);
-                return BadRequest(error);
-            }
-
             ToDoTask modelTask = null;
 
             try
@@ -216,8 +163,11 @@ namespace ToDoList.Controllers
                 return NotFound(error);
             }
 
+            var clientTask = ToDoTaskConverter.Convert(modelTask);
 
-            if (user.Id != modelTask.UserId)
+            var userIdRequest = this.HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier);
+
+            if (userIdRequest.Value != clientTask.UserId)
             {
                 var error = ServiceErrorResponses.AccessDenied();
                 return StatusCode(StatusCodes.Status403Forbidden, error);
@@ -237,9 +187,9 @@ namespace ToDoList.Controllers
                 return NotFound(error);
             }
 
-            var clientTask = ToDoTaskConverter.Convert(patchTask);
+            var clientPatchInfo = ToDoTaskConverter.Convert(patchTask);
 
-            return Ok(clientTask);
+            return Ok(clientPatchInfo);
         }
     }
 }

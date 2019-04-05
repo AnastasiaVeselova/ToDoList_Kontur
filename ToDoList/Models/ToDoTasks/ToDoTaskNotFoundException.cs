@@ -20,9 +20,9 @@ namespace Models.ToDoTasks
         /// <summary>
         /// Создает новый экземпляр исключения о том, что заметка не найдена
         /// </summary>
-        /// <param name="noteId">Идентификатор заметки, которая не найдена</param>
+        /// <param name="todoTaskId">Идентификатор заметки, которая не найдена</param>
         public ToDoTaskNotFoundException(Guid taskId)
-            : base($"Note \"{taskId}\" is not found.")
+            : base($"TodoTask \"{taskId}\" is not found.")
         {
         }
     }

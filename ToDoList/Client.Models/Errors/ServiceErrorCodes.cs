@@ -1,4 +1,4 @@
-﻿namespace Notes.Client.Errors
+﻿namespace Client.Models.Errors
 {
     /// <summary>
     /// Коды ошибок
