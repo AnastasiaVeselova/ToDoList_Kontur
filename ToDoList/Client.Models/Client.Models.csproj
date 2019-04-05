@@ -48,6 +48,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Errors\ServiceError.cs" />
+    <Compile Include="Errors\ServiceErrorCodes.cs" />
+    <Compile Include="Errors\ServiceErrorResponse.cs" />
     <Compile Include="SortType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ToDoTasks\ToDoTaskBuildInfo.cs" />

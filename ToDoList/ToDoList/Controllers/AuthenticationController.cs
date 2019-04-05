@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using Models.Users;
 using Models.Users.Services;
 using Newtonsoft.Json;
 using System;
@@ -13,7 +14,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using ToDoList.Auth;
 using ToDoList.Auth.Tokens;
-
+using ToDoList.Errors;
 
 namespace ToDoList.Controllers
 {
@@ -30,23 +31,36 @@ namespace ToDoList.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        public ActionResult GenerateToken([FromBody]Client.Models.Users.UserRegistrationInfo userInfo, [FromServices] IJwtSigningEncodingKey signingEncodingKey, CancellationToken cancellationToken)
+        public async Task<IActionResult> GenerateToken([FromBody]Client.Models.Users.UserRegistrationInfo userInfo, [FromServices] IJwtSigningEncodingKey signingEncodingKey, CancellationToken cancellationToken)
         {
             if (userInfo == null)
             {
-                //изменить статусы ответа при неудачах в юзерах и туду
-                return BadRequest();
+                var error = ServiceErrorResponses.BodyIsMissing("UserInfo");
+                return BadRequest(error);
             }
 
-            var user = users.GetAsync(userInfo.Login, cancellationToken);
-            if (user.Result == null)
+            if (userInfo.Login == null || userInfo.Password == null)
             {
-                return BadRequest();
+                var error = ServiceErrorResponses.NotEnoughUserData();
+                return BadRequest(error);
             }
 
-            if (user.Result.PasswordHash != Auth.AuthHash.GetHashPassword(userInfo.Password))
+            User user;
+
+            try
             {
-                return BadRequest();
+                user = await users.GetAsync(userInfo.Login, cancellationToken);
+            }
+            catch(UserNotFoundException)
+            {
+                var error = ServiceErrorResponses.UserNotFound(userInfo.Login);
+                return BadRequest(error);
+            }
+
+            if (user.PasswordHash != Auth.AuthHash.GetHashPassword(userInfo.Password))
+            {
+                var error = ServiceErrorResponses.IncorrectPassword();
+                return BadRequest(error);
             }
 
             var claims = new Claim[]

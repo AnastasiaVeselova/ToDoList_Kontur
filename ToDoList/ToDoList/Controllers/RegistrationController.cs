@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using ToDoList.Errors;
 
 namespace ToDoList.Controllers
 {
@@ -22,11 +23,18 @@ namespace ToDoList.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register([FromBody] Client.Models.Users.UserRegistrationInfo registrationInfo, CancellationToken cancellationToken)
+        public async Task<IActionResult> RegisterUser([FromBody] Client.Models.Users.UserRegistrationInfo registrationInfo, CancellationToken cancellationToken)
         {
             if (registrationInfo == null)
             {
-                return BadRequest();
+                var error = ServiceErrorResponses.BodyIsMissing("RegistrationInfo");
+                return BadRequest(error);
+            }
+
+            if (registrationInfo.Login == null || registrationInfo.Password == null)
+            {
+                var error = ServiceErrorResponses.NotEnoughUserData();
+                return BadRequest(error);
             }
 
             var creationInfo = new UserCreationInfo(registrationInfo.Login, Auth.AuthHash.GetHashPassword(registrationInfo.Password));
@@ -36,9 +44,10 @@ namespace ToDoList.Controllers
             {
                 user = await users.CreateAsync(creationInfo, cancellationToken);
             }
-            catch (UserDuplicationException exception)
+            catch (UserDuplicationException)
             {
-                return BadRequest(exception);
+                var error = ServiceErrorResponses.UserNameAlreadyExists(registrationInfo.Login);
+                return BadRequest(error);
             }
 
             var clientUser = UserConverter.Convert(user);
